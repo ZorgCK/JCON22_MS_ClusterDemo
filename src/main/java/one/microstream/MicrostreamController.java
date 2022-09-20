@@ -1,4 +1,4 @@
-package one.microstream.controller;
+package one.microstream;
 
 import io.micronaut.http.annotation.Controller;
 import one.microstream.cluster.nodelibrary.micronaut.StorageClusterController;
