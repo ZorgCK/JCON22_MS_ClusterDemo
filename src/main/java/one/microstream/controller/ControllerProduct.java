@@ -16,7 +16,7 @@ import one.microstream.domain.Product;
 import one.microstream.storage.DB;
 
 
-@Controller("/products")
+@Controller("/")
 public class ControllerProduct
 {
 	@Get()

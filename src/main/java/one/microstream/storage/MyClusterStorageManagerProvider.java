@@ -3,11 +3,11 @@ package one.microstream.storage;
 import one.microstream.cluster.nodelibrary.common.ClusterStorageManager;
 import one.microstream.cluster.nodelibrary.common.spi.ClusterStorageManagerProvider;
 
-public class ClusterStorageProvider implements ClusterStorageManagerProvider
+public class MyClusterStorageManagerProvider implements ClusterStorageManagerProvider
 {
 
 	@Override
-	public ClusterStorageManager<?> provideClusterStorageManager()
+	public ClusterStorageManager<DataRoot> provideClusterStorageManager()
 	{
 		return DB.get().storage();
 	}
