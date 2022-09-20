@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: clusterDemo
+netty:
+  default:
+    allocator:
+      max-order: 3
