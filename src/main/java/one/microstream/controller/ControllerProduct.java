@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
@@ -58,8 +56,7 @@ public class ControllerProduct
 		return HttpResponse.ok(createdProduct);
 	}
 	
-	@Delete
-	@Consumes(value = MediaType.ALL)
+	@Delete("/{uuid}")
 	public HttpResponse<Product> delete(@QueryValue String uuid)
 	{
 		Optional<Product> productToDelete =
