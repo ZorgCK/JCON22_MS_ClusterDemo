@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Patch;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.QueryValue;
 import one.microstream.domain.Product;
@@ -19,13 +18,13 @@ import one.microstream.storage.DB;
 @Controller("/")
 public class ControllerProduct
 {
-	@Get()
+	@Get
 	public HttpResponse<List<Product>> getHttpList()
 	{
 		return HttpResponse.ok(DB.get().root().getProducts());
 	}
 	
-	@Post(consumes = MediaType.APPLICATION_JSON)
+	@Patch
 	public HttpResponse<Product> update(@Body Product product)
 	{
 		Optional<Product> productOptional =
@@ -46,7 +45,7 @@ public class ControllerProduct
 		return HttpResponse.notFound();
 	}
 	
-	@Put(consumes = MediaType.APPLICATION_JSON)
+	@Put
 	public HttpResponse<Product> insert(@Body Product product)
 	{
 		Product createdProduct = new Product(product.getName(), product.getDescription(), product.getPrice());
