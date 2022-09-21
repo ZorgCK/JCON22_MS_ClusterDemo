@@ -5,7 +5,7 @@ import one.microstream.cluster.nodelibrary.common.spi.ClusterStorageManagerProvi
 import one.microstream.storage.DB;
 import one.microstream.storage.DataRoot;
 
-public class MyClusterStorageManagerProvider implements ClusterStorageManagerProvider
+public class StorageManagerProvider implements ClusterStorageManagerProvider
 {
 	@Override
 	public ClusterStorageManager<DataRoot> provideClusterStorageManager()
