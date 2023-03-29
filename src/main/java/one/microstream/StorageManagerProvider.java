@@ -1,7 +1,7 @@
 package one.microstream;
 
-import one.microstream.cluster.nodelibrary.common.ClusterStorageManager;
-import one.microstream.cluster.nodelibrary.common.spi.ClusterStorageManagerProvider;
+import one.microstream.enterprise.cluster.nodelibrary.common.ClusterStorageManager;
+import one.microstream.enterprise.cluster.nodelibrary.common.spi.ClusterStorageManagerProvider;
 import one.microstream.storage.DB;
 import one.microstream.storage.DataRoot;
 
