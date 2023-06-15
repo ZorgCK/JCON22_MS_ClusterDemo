@@ -1,7 +1,12 @@
 package one.microstream.controller;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -70,9 +75,14 @@ public class ControllerProduct
 	
 	@Put("/setup")
 	@Consumes(value = MediaType.ALL)
-	public HttpResponse<String> setup(@Body List<Product> product)
+	public HttpResponse<String> setup(@Body String json)
 	{
-		DB.get().root().getProducts().addAll(product);
+		Gson gson = new Gson();
+
+		Type founderListType = new TypeToken<ArrayList<Product>>(){}.getType();
+		List<Product> productList = gson.fromJson(json, founderListType);
+		
+		DB.get().root().getProducts().addAll(productList);
 		DB.get().storage().store(DB.get().root().getProducts());
 		
 		return HttpResponse.ok("1000 Products created");
