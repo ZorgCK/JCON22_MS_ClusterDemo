@@ -11,5 +11,6 @@ public class StorageManagerProvider implements ClusterStorageManagerProvider
 	public ClusterStorageManager<DataRoot> provideClusterStorageManager()
 	{
 		return DB.get().storage();
+//		return null;
 	}
 }

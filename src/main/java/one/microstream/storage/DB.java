@@ -15,6 +15,10 @@ public class DB
 	
 	private final Lazy<DataRoot>					root;
 	private final ClusterStorageManager<DataRoot>	storage	= new ClusterStorageManager<>(new DataRoot());
+	// public final static DataRoot root = new DataRoot();
+	// private final static EmbeddedStorageManager storageManager =
+	// EmbeddedStorageConfiguration.Builder().setStorageDirectory(
+	// "data").createEmbeddedStorageFoundation().createEmbeddedStorageManager(root).start();
 	
 	public DB()
 	{
@@ -30,4 +34,19 @@ public class DB
 	{
 		return this.root.get();
 	}
+	
+	// public DB()
+	// {
+	//
+	// }
+	//
+	// public DataRoot root()
+	// {
+	// return this.root;
+	// }
+	//
+	// public EmbeddedStorageManager storage()
+	// {
+	// return this.storageManager;
+	// }
 }

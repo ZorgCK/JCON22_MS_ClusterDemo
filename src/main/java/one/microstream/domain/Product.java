@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Product
 {
-	private final String	uuid	= UUID.randomUUID().toString();
+	private String	uuid	= UUID.randomUUID().toString();
 	private String			id;
 	private String			product;
 	private String			description;

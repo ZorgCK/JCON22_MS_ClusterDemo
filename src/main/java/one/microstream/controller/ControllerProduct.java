@@ -15,7 +15,6 @@ import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.QueryValue;
 import one.microstream.domain.Product;
 import one.microstream.storage.DB;
-import one.microstream.utils.MockupUtils;
 
 
 @Controller("/")
@@ -70,6 +69,7 @@ public class ControllerProduct
 	}
 	
 	@Put("/setup")
+	@Consumes(value = MediaType.ALL)
 	public HttpResponse<String> setup(@Body List<Product> product)
 	{
 		DB.get().root().getProducts().addAll(product);
