@@ -70,11 +70,9 @@ public class ControllerProduct
 	}
 	
 	@Put("/setup")
-	public HttpResponse<String> setup()
+	public HttpResponse<String> setup(@Body List<Product> product)
 	{
-		List<Product> loadMockupData = MockupUtils.loadMockupData();
-		
-		DB.get().root().getProducts().addAll(loadMockupData);
+		DB.get().root().getProducts().addAll(product);
 		DB.get().storage().store(DB.get().root().getProducts());
 		
 		return HttpResponse.ok("1000 Products created");
