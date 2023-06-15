@@ -1,37 +1,68 @@
 package one.microstream.domain;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 
 public class Product
 {
-	private String		uuid	= UUID.randomUUID().toString();
-	private String		name;
-	private String		description;
-	private BigDecimal	price;
+	private final String	uuid	= UUID.randomUUID().toString();
+	private String			id;
+	private String			product;
+	private String			description;
+	private String			company;
+	private String			price;
+	private String			currency;
+	private String			department;
 	
 	public Product()
 	{
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Product(String name, String description, BigDecimal price)
+	public Product(
+		String id,
+		String product,
+		String description,
+		String company,
+		String price,
+		String currency,
+		String department)
 	{
 		super();
-		this.name = name;
+		this.id = id;
+		this.product = product;
 		this.description = description;
+		this.company = company;
 		this.price = price;
+		this.currency = currency;
+		this.department = department;
 	}
 	
-	public String getName()
+	
+	public String getUuid()
 	{
-		return name;
+		return uuid;
+	}
+
+	public String getId()
+	{
+		return id;
 	}
 	
-	public void setName(String name)
+	public void setId(String id)
 	{
-		this.name = name;
+		this.id = id;
+	}
+	
+	public String getProduct()
+	{
+		return product;
+	}
+	
+	public void setProduct(String product)
+	{
+		this.product = product;
 	}
 	
 	public String getDescription()
@@ -44,19 +75,44 @@ public class Product
 		this.description = description;
 	}
 	
-	public BigDecimal getPrice()
+	public String getCompany()
+	{
+		return company;
+	}
+	
+	public void setCompany(String company)
+	{
+		this.company = company;
+	}
+	
+	public String getPrice()
 	{
 		return price;
 	}
 	
-	public void setPrice(BigDecimal price)
+	public void setPrice(String price)
 	{
 		this.price = price;
 	}
 	
-	public String getUuid()
+	public String getCurrency()
 	{
-		return uuid;
+		return currency;
+	}
+	
+	public void setCurrency(String currency)
+	{
+		this.currency = currency;
+	}
+	
+	public String getDepartment()
+	{
+		return department;
+	}
+	
+	public void setDepartment(String department)
+	{
+		this.department = department;
 	}
 	
 }

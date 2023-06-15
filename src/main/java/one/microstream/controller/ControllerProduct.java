@@ -15,6 +15,7 @@ import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.QueryValue;
 import one.microstream.domain.Product;
 import one.microstream.storage.DB;
+import one.microstream.utils.MockupUtils;
 
 
 @Controller("/")
@@ -36,8 +37,11 @@ public class ControllerProduct
 		{
 			Product changedProduct = productOptional.get();
 			changedProduct.setDescription(product.getDescription());
-			changedProduct.setName(product.getName());
+			changedProduct.setProduct(product.getProduct());
 			changedProduct.setPrice(product.getPrice());
+			changedProduct.setCurrency(product.getCurrency());
+			changedProduct.setDepartment(product.getDepartment());
+			changedProduct.setCompany(product.getCompany());
 			
 			DB.get().storage().store(changedProduct);
 			
@@ -50,12 +54,30 @@ public class ControllerProduct
 	@Put
 	public HttpResponse<Product> insert(@Body Product product)
 	{
-		Product createdProduct = new Product(product.getName(), product.getDescription(), product.getPrice());
+		Product createdProduct = new Product(
+			product.getId(),
+			product.getProduct(),
+			product.getDescription(),
+			product.getCompany(),
+			product.getPrice(),
+			product.getCurrency(),
+			product.getDepartment());
 		
 		DB.get().root().getProducts().add(createdProduct);
 		DB.get().storage().store(DB.get().root().getProducts());
 		
 		return HttpResponse.ok(createdProduct);
+	}
+	
+	@Put("/setup")
+	public HttpResponse<String> setup()
+	{
+		List<Product> loadMockupData = MockupUtils.loadMockupData();
+		
+		DB.get().root().getProducts().addAll(loadMockupData);
+		DB.get().storage().store(DB.get().root().getProducts());
+		
+		return HttpResponse.ok("1000 Products created");
 	}
 	
 	@Delete("/{uuid}")
@@ -72,6 +94,17 @@ public class ControllerProduct
 			
 			HttpResponse.ok("Product has been successfully deleted");
 		}
+		
+		return HttpResponse.notFound();
+	}
+	
+	@Delete("/clear")
+	public HttpResponse<Product> delete()
+	{
+		DB.get().root().getProducts().clear();
+		DB.get().storage().store(DB.get().root().getProducts());
+		
+		HttpResponse.ok("Product has been successfully deleted");
 		
 		return HttpResponse.notFound();
 	}
