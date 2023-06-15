@@ -29,7 +29,7 @@ public class MockupUtils
 		List<Product> products = new ArrayList<Product>();
 		
 		ClassPathResourceLoader loader = new ResourceResolver().getLoader(ClassPathResourceLoader.class).get();
-		Optional<URL> productsURL = loader.getResource("mockup/MOCKDATA.json");
+		Optional<URL> productsURL = loader.getResource("src/main/resources/mockup/MOCKDATA.json");
 		
 		JSONParser productParser = new JSONParser();
 		
