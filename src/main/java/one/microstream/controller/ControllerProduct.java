@@ -18,6 +18,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Patch;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.annotation.PathParam;
 import one.microstream.domain.Product;
 import one.microstream.storage.DB;
 
@@ -90,7 +91,7 @@ public class ControllerProduct
 	
 	@Delete("/{uuid}")
 	@Consumes(value = MediaType.ALL)
-	public HttpResponse<Product> delete(@QueryValue String uuid)
+	public HttpResponse<Product> delete(@PathParam String uuid)
 	{
 		Optional<Product> productToDelete =
 			DB.get().root().getProducts().parallelStream().filter(p -> p.getUuid().equals(uuid)).findFirst();
