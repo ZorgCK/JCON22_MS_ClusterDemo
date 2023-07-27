@@ -90,7 +90,7 @@ public class ControllerProduct
 	
 	@Delete("/{uuid}")
 	@Consumes(value = MediaType.ALL)
-	public HttpResponse<Product> delete(@PathVariable final String uuid)
+	public HttpResponse<String> delete(@PathVariable final String uuid)
 	{
 		final Optional<Product> productToDelete =
 			DB.get().root().getProducts().parallelStream().filter(p -> p.getUuid().equals(uuid)).findFirst();
@@ -107,7 +107,7 @@ public class ControllerProduct
 	}
 	
 	@Delete("/clear")
-	public HttpResponse<Product> delete()
+	public HttpResponse<String> delete()
 	{
 		DB.get().root().getProducts().clear();
 		DB.get().storage().store(DB.get().root().getProducts());
