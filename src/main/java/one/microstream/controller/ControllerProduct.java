@@ -100,7 +100,7 @@ public class ControllerProduct
 			DB.get().root().getProducts().remove(productToDelete.get());
 			DB.get().storage().store(DB.get().root().getProducts());
 			
-			HttpResponse.ok("Product has been successfully deleted");
+			return HttpResponse.ok("Product has been successfully deleted");
 		}
 		
 		return HttpResponse.notFound();
@@ -112,8 +112,6 @@ public class ControllerProduct
 		DB.get().root().getProducts().clear();
 		DB.get().storage().store(DB.get().root().getProducts());
 		
-		HttpResponse.ok("Product has been successfully deleted");
-		
-		return HttpResponse.notFound();
+		return HttpResponse.ok("Product has been successfully deleted");
 	}
 }
