@@ -16,8 +16,8 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Patch;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Put;
-import io.micronaut.http.annotation.QueryValue;
 import one.microstream.domain.Product;
 import one.microstream.storage.DB;
 
@@ -32,14 +32,14 @@ public class ControllerProduct
 	}
 	
 	@Patch
-	public HttpResponse<Product> update(@Body Product product)
+	public HttpResponse<Product> update(@Body final Product product)
 	{
-		Optional<Product> productOptional =
+		final Optional<Product> productOptional =
 			DB.get().root().getProducts().stream().filter(p -> p.getUuid().equals(product.getUuid())).findFirst();
 		
 		if(productOptional.isPresent())
 		{
-			Product changedProduct = productOptional.get();
+			final Product changedProduct = productOptional.get();
 			changedProduct.setDescription(product.getDescription());
 			changedProduct.setProduct(product.getProduct());
 			changedProduct.setPrice(product.getPrice());
@@ -56,9 +56,9 @@ public class ControllerProduct
 	}
 	
 	@Put
-	public HttpResponse<Product> insert(@Body Product product)
+	public HttpResponse<Product> insert(@Body final Product product)
 	{
-		Product createdProduct = new Product(
+		final Product createdProduct = new Product(
 			product.getId(),
 			product.getProduct(),
 			product.getDescription(),
@@ -75,12 +75,12 @@ public class ControllerProduct
 	
 	@Put("/setup")
 	@Consumes(value = MediaType.ALL)
-	public HttpResponse<String> setup(@Body String json)
+	public HttpResponse<String> setup(@Body final String json)
 	{
-		Gson gson = new Gson();
+		final Gson gson = new Gson();
 
-		Type founderListType = new TypeToken<ArrayList<Product>>(){}.getType();
-		List<Product> productList = gson.fromJson(json, founderListType);
+		final Type founderListType = new TypeToken<ArrayList<Product>>(){}.getType();
+		final List<Product> productList = gson.fromJson(json, founderListType);
 		
 		DB.get().root().getProducts().addAll(productList);
 		DB.get().storage().store(DB.get().root().getProducts());
@@ -90,9 +90,9 @@ public class ControllerProduct
 	
 	@Delete("/{uuid}")
 	@Consumes(value = MediaType.ALL)
-	public HttpResponse<Product> delete(@QueryValue String uuid)
+	public HttpResponse<String> delete(@PathVariable final String uuid)
 	{
-		Optional<Product> productToDelete =
+		final Optional<Product> productToDelete =
 			DB.get().root().getProducts().parallelStream().filter(p -> p.getUuid().equals(uuid)).findFirst();
 		
 		if(productToDelete.isPresent())
@@ -100,20 +100,18 @@ public class ControllerProduct
 			DB.get().root().getProducts().remove(productToDelete.get());
 			DB.get().storage().store(DB.get().root().getProducts());
 			
-			HttpResponse.ok("Product has been successfully deleted");
+			return HttpResponse.ok("Product has been successfully deleted");
 		}
 		
 		return HttpResponse.notFound();
 	}
 	
 	@Delete("/clear")
-	public HttpResponse<Product> delete()
+	public HttpResponse<String> delete()
 	{
 		DB.get().root().getProducts().clear();
 		DB.get().storage().store(DB.get().root().getProducts());
 		
-		HttpResponse.ok("Product has been successfully deleted");
-		
-		return HttpResponse.notFound();
+		return HttpResponse.ok("Product has been successfully deleted");
 	}
 }
