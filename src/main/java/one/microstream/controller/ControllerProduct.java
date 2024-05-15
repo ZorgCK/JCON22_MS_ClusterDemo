@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.kafka.common.Uuid;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -69,6 +71,7 @@ public class ControllerProduct
 	public HttpResponse<Product> insert(@Body final Product product)
 	{
 		final Product createdProduct = new Product(
+			Uuid.randomUuid().toString(),
 			product.getId(),
 			product.getProduct(),
 			product.getDescription(),
