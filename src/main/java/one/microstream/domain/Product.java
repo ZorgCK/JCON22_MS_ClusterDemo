@@ -2,10 +2,12 @@ package one.microstream.domain;
 
 import java.util.UUID;
 
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public class Product
 {
-	private String	uuid	= UUID.randomUUID().toString();
+	private final String	uuid	= UUID.randomUUID().toString();
 	private String			id;
 	private String			product;
 	private String			description;
@@ -21,13 +23,13 @@ public class Product
 	}
 	
 	public Product(
-		String id,
-		String product,
-		String description,
-		String company,
-		String price,
-		String currency,
-		String department)
+		final String id,
+		final String product,
+		final String description,
+		final String company,
+		final String price,
+		final String currency,
+		final String department)
 	{
 		super();
 		this.id = id;
@@ -42,75 +44,75 @@ public class Product
 	
 	public String getUuid()
 	{
-		return uuid;
+		return this.uuid;
 	}
 
 	public String getId()
 	{
-		return id;
+		return this.id;
 	}
 	
-	public void setId(String id)
+	public void setId(final String id)
 	{
 		this.id = id;
 	}
 	
 	public String getProduct()
 	{
-		return product;
+		return this.product;
 	}
 	
-	public void setProduct(String product)
+	public void setProduct(final String product)
 	{
 		this.product = product;
 	}
 	
 	public String getDescription()
 	{
-		return description;
+		return this.description;
 	}
 	
-	public void setDescription(String description)
+	public void setDescription(final String description)
 	{
 		this.description = description;
 	}
 	
 	public String getCompany()
 	{
-		return company;
+		return this.company;
 	}
 	
-	public void setCompany(String company)
+	public void setCompany(final String company)
 	{
 		this.company = company;
 	}
 	
 	public String getPrice()
 	{
-		return price;
+		return this.price;
 	}
 	
-	public void setPrice(String price)
+	public void setPrice(final String price)
 	{
 		this.price = price;
 	}
 	
 	public String getCurrency()
 	{
-		return currency;
+		return this.currency;
 	}
 	
-	public void setCurrency(String currency)
+	public void setCurrency(final String currency)
 	{
 		this.currency = currency;
 	}
 	
 	public String getDepartment()
 	{
-		return department;
+		return this.department;
 	}
 	
-	public void setDepartment(String department)
+	public void setDepartment(final String department)
 	{
 		this.department = department;
 	}
