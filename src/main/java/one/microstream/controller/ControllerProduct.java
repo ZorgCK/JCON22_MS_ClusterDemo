@@ -19,23 +19,33 @@ import io.micronaut.http.annotation.Patch;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Put;
 import one.microstream.domain.Product;
-import one.microstream.storage.DB;
+import one.microstream.enterprise.cluster.nodelibrary.common.ClusterStorageManager;
+import one.microstream.storage.DataRoot;
 
 
 @Controller("/")
 public class ControllerProduct
 {
+	private final ClusterStorageManager<DataRoot> storage;
+	private final DataRoot root;
+	
+	public ControllerProduct(final ClusterStorageManager<DataRoot> storage)
+	{
+		this.storage = storage;
+		this.root = storage.root().get();
+	}
+	
 	@Get
 	public HttpResponse<List<Product>> getHttpList()
 	{
-		return HttpResponse.ok(DB.get().root().getProducts());
+		return HttpResponse.ok(this.root.getProducts());
 	}
 	
 	@Patch
 	public HttpResponse<Product> update(@Body final Product product)
 	{
 		final Optional<Product> productOptional =
-			DB.get().root().getProducts().stream().filter(p -> p.getUuid().equals(product.getUuid())).findFirst();
+			this.root.getProducts().stream().filter(p -> p.getUuid().equals(product.getUuid())).findFirst();
 		
 		if(productOptional.isPresent())
 		{
@@ -47,7 +57,7 @@ public class ControllerProduct
 			changedProduct.setDepartment(product.getDepartment());
 			changedProduct.setCompany(product.getCompany());
 			
-			DB.get().storage().store(changedProduct);
+			this.storage.store(changedProduct);
 			
 			return HttpResponse.ok(changedProduct);
 		}
@@ -67,8 +77,8 @@ public class ControllerProduct
 			product.getCurrency(),
 			product.getDepartment());
 		
-		DB.get().root().getProducts().add(createdProduct);
-		DB.get().storage().store(DB.get().root().getProducts());
+		this.root.getProducts().add(createdProduct);
+		this.storage.store(this.root.getProducts());
 		
 		return HttpResponse.ok(createdProduct);
 	}
@@ -82,8 +92,8 @@ public class ControllerProduct
 		final Type founderListType = new TypeToken<ArrayList<Product>>(){}.getType();
 		final List<Product> productList = gson.fromJson(json, founderListType);
 		
-		DB.get().root().getProducts().addAll(productList);
-		DB.get().storage().store(DB.get().root().getProducts());
+		this.root.getProducts().addAll(productList);
+		this.storage.store(this.root.getProducts());
 		
 		return HttpResponse.ok("1000 Products created");
 	}
@@ -93,12 +103,12 @@ public class ControllerProduct
 	public HttpResponse<String> delete(@PathVariable final String uuid)
 	{
 		final Optional<Product> productToDelete =
-			DB.get().root().getProducts().parallelStream().filter(p -> p.getUuid().equals(uuid)).findFirst();
+			this.root.getProducts().parallelStream().filter(p -> p.getUuid().equals(uuid)).findFirst();
 		
 		if(productToDelete.isPresent())
 		{
-			DB.get().root().getProducts().remove(productToDelete.get());
-			DB.get().storage().store(DB.get().root().getProducts());
+			this.root.getProducts().remove(productToDelete.get());
+			this.storage.store(this.root.getProducts());
 			
 			return HttpResponse.ok("Product has been successfully deleted");
 		}
@@ -109,8 +119,8 @@ public class ControllerProduct
 	@Delete("/clear")
 	public HttpResponse<String> delete()
 	{
-		DB.get().root().getProducts().clear();
-		DB.get().storage().store(DB.get().root().getProducts());
+		this.root.getProducts().clear();
+		this.storage.store(this.root.getProducts());
 		
 		return HttpResponse.ok("Product has been successfully deleted");
 	}
