@@ -3,8 +3,10 @@ package one.microstream.domain;
 import java.util.UUID;
 
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
 
 @Introspected
+@Serdeable
 public class Product
 {
 	private final String	uuid	= UUID.randomUUID().toString();
