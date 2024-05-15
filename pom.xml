@@ -34,31 +34,23 @@
 		</repository>
 	</repositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-bom</artifactId>
+				<version>2.22.1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
-			<groupId>io.micronaut</groupId>
-			<artifactId>micronaut-inject</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.micronaut.validation</groupId>
-			<artifactId>micronaut-validation</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.micronaut.test</groupId>
-			<artifactId>micronaut-test-junit5</artifactId>
-			<scope>test</scope>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.micronaut</groupId>
@@ -81,8 +73,13 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.micronaut</groupId>
-			<artifactId>micronaut-jackson-databind</artifactId>
+			<groupId>io.micronaut.serde</groupId>
+			<artifactId>micronaut-serde-jackson</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.micronaut.validation</groupId>
+			<artifactId>micronaut-validation</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -91,20 +88,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-enterprise-cluster-nodelibrary-micronaut</artifactId>
-			<version>1.5.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -118,44 +104,98 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>io.micronaut.test</groupId>
+			<artifactId>micronaut-test-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>one.microstream</groupId>
+			<artifactId>microstream-enterprise-cluster-nodelibrary-micronaut</artifactId>
+			<version>1.5.0</version>
+		</dependency>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-bom</artifactId>
-				<version>2.19.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>io.micronaut.build</groupId>
+				<groupId>io.micronaut.maven</groupId>
 				<artifactId>micronaut-maven-plugin</artifactId>
+				<configuration>
+					<configFile>aot-${packaging}.properties</configFile>
+				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<!-- Uncomment to enable incremental compilation -->
-					<!--
-					<useIncrementalCompilation>false</useIncrementalCompilation> -->
-
-					<annotationProcessorPaths
-						combine.children="append">
+					<annotationProcessorPaths combine.children="append">
 						<path>
 							<groupId>io.micronaut</groupId>
 							<artifactId>micronaut-http-validation</artifactId>
-							<version>${micronaut.version}</version>
+							<version>${micronaut.core.version}</version>
+						</path>
+						<path>
+							<groupId>io.micronaut.eclipsestore</groupId>
+							<artifactId>micronaut-eclipsestore-annotations</artifactId>
+							<version>${micronaut.eclipsestore.version}</version>
+							<exclusions>
+								<exclusion>
+									<groupId>io.micronaut</groupId>
+									<artifactId>micronaut-inject</artifactId>
+								</exclusion>
+							</exclusions>
+						</path>
+						<path>
+							<groupId>io.micronaut.serde</groupId>
+							<artifactId>micronaut-serde-processor</artifactId>
+							<version>${micronaut.serialization.version}</version>
+							<exclusions>
+								<exclusion>
+									<groupId>io.micronaut</groupId>
+									<artifactId>micronaut-inject</artifactId>
+								</exclusion>
+							</exclusions>
+						</path>
+						<path>
+							<groupId>io.micronaut.validation</groupId>
+							<artifactId>micronaut-validation-processor</artifactId>
+							<version>${micronaut.validation.version}</version>
+							<exclusions>
+								<exclusion>
+									<groupId>io.micronaut</groupId>
+									<artifactId>micronaut-inject</artifactId>
+								</exclusion>
+							</exclusions>
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
@@ -166,5 +206,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

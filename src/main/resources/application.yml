@@ -1,6 +1,10 @@
 micronaut:
   application:
     name: clusterDemo
+eclipsestore:
+  storage:
+    main:
+      root-class: one.microstream.storage.DataRoot
 netty:
   default:
     allocator:
